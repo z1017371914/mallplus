@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zscat.mallplus.sys.mapper.SysAdminLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zscat.mallplus.sys.entity.SysAdminLog">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="service_name" property="serviceName" />
+        <result column="method" property="method" />
+        <result column="operation_desc" property="operationDesc" />
+        <result column="create_time" property="createTime" />
+        <result column="ip" property="ip" />
+        <result column="params" property="params" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, user_name, service_name, method, operation_desc, create_time, ip, params
+    </sql>
+
+</mapper>

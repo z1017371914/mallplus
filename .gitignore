@@ -1,0 +1,20 @@
+# Maven #
+target/
+
+# IDEA #
+.idea/
+*.iml
+*.zip
+# Eclipse #
+.settings/
+.classpath
+.project
+mall-admin-web
+mall-front-vue/
+wechatapp
+Mall-Vue-master/
+mall-admin-web/src
+vue-h5-mall
+*.js
+/vue
+*/vue
