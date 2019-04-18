@@ -1,7 +1,8 @@
 package com.zscat.mallplus.component;
 
-import com.macro.mall.dto.CommonResult;
+
 import com.zscat.mallplus.util.JsonUtil;
+import com.zscat.mallplus.utils.CommonResult;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;

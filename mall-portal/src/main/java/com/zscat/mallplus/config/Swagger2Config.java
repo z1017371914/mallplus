@@ -22,7 +22,7 @@ public class Swagger2Config {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.macro.mall.portal.single"))
+                .apis(RequestHandlerSelectors.basePackage("com.zscat.mallplus.portal.single"))
                 .paths(PathSelectors.any())
                 .build();
     }

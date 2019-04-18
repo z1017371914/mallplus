@@ -4,7 +4,7 @@ package com.zscat.mallplus.util;
 import com.zscat.mallplus.bo.ColumnDO;
 import com.zscat.mallplus.bo.TableDO;
 import com.zscat.mallplus.config.Constant;
-import com.macro.mall.exception.ApiRRException;
+import com.zscat.mallplus.exception.ApiRRException;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.IOUtils;
@@ -101,7 +101,7 @@ public class GenUtils {
         prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
         Velocity.init(prop);
 
-        String packages="com.macro.mall";
+        String packages="com.zscat.mallplus";
         String Module=tableDO.getTableName().split("_")[0].substring(0,1).toUpperCase()+tableDO.getTableName().split("_")[0].substring(1).toLowerCase();
         //封装模板数据
         Map<String, Object> map = new HashMap<>(16);

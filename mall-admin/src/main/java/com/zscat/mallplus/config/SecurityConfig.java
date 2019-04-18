@@ -1,20 +1,18 @@
 package com.zscat.mallplus.config;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zscat.mallplus.bo.AdminUserDetails;
 import com.zscat.mallplus.component.JwtAuthenticationTokenFilter;
 import com.zscat.mallplus.component.RestAuthenticationEntryPoint;
 import com.zscat.mallplus.component.RestfulAccessDeniedHandler;
-import com.macro.mall.model.UmsAdmin;
-import com.macro.mall.model.UmsPermission;
-
-import com.macro.mall.sys.service.UmsAdminService;
+import com.zscat.mallplus.sys.entity.SysPermission;
+import com.zscat.mallplus.sys.entity.SysUser;
+import com.zscat.mallplus.sys.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,11 +21,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 
@@ -39,12 +40,14 @@ import java.util.List;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private UmsAdminService adminService;
+    @Resource
+    private ISysUserService sysUserService;
     @Autowired
     private RestfulAccessDeniedHandler restfulAccessDeniedHandler;
     @Autowired
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+
+
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -91,21 +94,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new Md5PasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
         //获取登录用户信息
         return username -> {
-            UmsAdmin admin = adminService.getAdminByUsername(username);
+            SysUser user = new SysUser();
+            user.setUsername(username);
+            SysUser admin = sysUserService.getOne(new QueryWrapper<>(user));
             if (admin != null) {
-                List<UmsPermission> permissionList = adminService.getPermissionList(admin.getId());
+                List<SysPermission> permissionList = sysUserService.getPermissionListByUserId(admin.getId());
                 return new AdminUserDetails(admin, permissionList);
             }
             throw new UsernameNotFoundException("用户名或密码错误");
         };
     }
+
+
 
     @Bean
     public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter() {

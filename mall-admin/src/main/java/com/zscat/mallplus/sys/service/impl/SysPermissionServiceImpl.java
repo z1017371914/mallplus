@@ -17,4 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysPermission> implements ISysPermissionService {
 
+    @Override
+    public Object getPermissionsByUserId(Long id) {
+        return null;
+    }
 }

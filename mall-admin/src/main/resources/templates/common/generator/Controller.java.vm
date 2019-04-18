@@ -1,12 +1,12 @@
 package ${package}.${module}.controller;
 
-import com.macro.mall.dto.CommonResult;
+import com.zscat.mallplus.dto.CommonResult;
 import ${package}.${module}.model.${Module}${className};
 
 import ${package}.${module}.service.${className}Service;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import com.macro.mall.annotation.SysLog;
+import com.zscat.mallplus.annotation.SysLog;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;

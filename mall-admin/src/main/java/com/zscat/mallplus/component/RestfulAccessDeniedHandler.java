@@ -1,7 +1,8 @@
 package com.zscat.mallplus.component;
 
-import com.macro.mall.dto.CommonResult;
+
 import com.zscat.mallplus.util.JsonUtil;
+import com.zscat.mallplus.utils.CommonResult;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;

@@ -13,7 +13,7 @@
 - 安装lombok插件，下载地址：https://projectlombok.org/downloads/lombok.jar  
 - 下载完后双击，使用java程序打开
 - 按照提示选择eclipe.exe的安装路径安装插件，完成后重启Eclipse
-- 启动项目：右击com.macro.mall.MallAdminApplication的main方法，选择run as Java Application
+- 启动项目：右击com.zscat.mallplus.MallAdminApplication的main方法，选择run as Java Application
 
 ## mysql
 
@@ -83,17 +83,17 @@
 
 ## mall-admin
 
-- 启动项目：直接运行com.macro.mall.MallAdminApplication的main方法即可
+- 启动项目：直接运行com.zscat.mallplus.MallAdminApplication的main方法即可
 - 接口文档地址：http://localhost:8080/swagger-ui.html
 
 ## mall-search
 
-- 启动项目：直接运行com.macro.mall.search.MallSearchApplication的main方法即可
+- 启动项目：直接运行com.zscat.mallplus.search.MallSearchApplication的main方法即可
 - 接口文档地址：http://localhost:8081/swagger-ui.html
 - 使用前需要先调用接口导入数据；http://localhost:8081/esProduct/importAll
 - 如出现无法启动的问题，可以先删除elasticsearch里面的数据再启动
 
 ## mall-portal
 
-- 启动mall-portal项目：直接运行com.macro.mall.portal.MallPortalApplication的main方法即可
+- 启动mall-portal项目：直接运行com.zscat.mallplus.portal.MallPortalApplication的main方法即可
 - 接口文档地址：http://localhost:8085/swagger-ui.html

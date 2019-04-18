@@ -1,13 +1,14 @@
 package com.zscat.mallplus.bo;
 
-import com.macro.mall.annotation.SysLog;
-import com.macro.mall.mapper.AdminOperationLogMapper;
-import com.macro.mall.model.SystemOperationLog;
-import com.macro.mall.model.UmsAdmin;
-import com.macro.mall.sys.service.UmsAdminService;
+
+import com.zscat.mallplus.annotation.SysLog;
+import com.zscat.mallplus.sys.entity.SysAdminLog;
+import com.zscat.mallplus.sys.entity.SysUser;
+import com.zscat.mallplus.sys.service.ISysAdminLogService;
+import com.zscat.mallplus.sys.service.ISysUserService;
 import com.zscat.mallplus.util.IpAddressUtil;
 import com.zscat.mallplus.util.UserUtils;
-import com.zscat.mallplus.util.Validator;
+import com.zscat.mallplus.utils.ValidatorUtils;
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -38,10 +39,10 @@ import java.util.Objects;
 public class SysLogAspect {
     private Logger logger = LoggerFactory.getLogger(SysLogAspect.class);
     @Resource
-    public AdminOperationLogMapper fopSystemOperationLogService;
+    public ISysAdminLogService fopSystemOperationLogService;
     @Resource
-    public UmsAdminService adminService;
-    @Pointcut("@annotation(com.macro.mall.annotation.SysLog)")
+    public ISysUserService adminService;
+    @Pointcut("@annotation(com.zscat.mallplus.annotation.SysLog)")
     public void logPointCut() {
 
     }
@@ -53,7 +54,7 @@ public class SysLogAspect {
             MethodSignature signature = (MethodSignature) joinPoint.getSignature();
             Method method = signature.getMethod();
 
-            SystemOperationLog sysLog = new SystemOperationLog();
+            SysAdminLog sysLog = new SysAdminLog();
             SysLog syslog1 = method.getAnnotation(SysLog.class);
             if (syslog1 != null) {
                 //注解上的描述
@@ -106,7 +107,7 @@ public class SysLogAspect {
 
             sysLog.setIp(IpAddressUtil.getIpAddr(request));
             //用户名
-            UmsAdmin sysUserEntity = UserUtils.getCurrentMember();
+            SysUser sysUserEntity = UserUtils.getCurrentMember();
             if (null != sysUserEntity) {
                 sysLog.setUserId(sysUserEntity.getId());
                 sysLog.setUserName(sysUserEntity.getUsername());
@@ -115,7 +116,7 @@ public class SysLogAspect {
             logger.info(getString(sysLog));
 
             //保存系统日志
-            fopSystemOperationLogService.insertSelective(sysLog);
+            fopSystemOperationLogService.save(sysLog);
         } catch (Exception ex) {
             logger.error("保存系统日志失败");
         }
@@ -130,7 +131,7 @@ public class SysLogAspect {
         for (Field field : farr) {
             try {
                 field.setAccessible(true);
-                if(!Validator.empty(field.get(o))){
+                if(!ValidatorUtils.empty(field.get(o))){
                     sb.append(field.getName());
                     sb.append("=");
                     if (field.get(o) instanceof Date) {

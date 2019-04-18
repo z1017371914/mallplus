@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.SysLog;
 import com.zscat.mallplus.sys.entity.SysRole;
-import com.zscat.mallplus.sys.service.ISysPermissionService;
 import com.zscat.mallplus.sys.service.ISysRoleService;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.utils.ValidatorUtils;
@@ -37,10 +36,6 @@ public class SysRoleController  extends ApiController {
     
     @Resource
     private ISysRoleService sysRoleService;
-    @Resource
-    private ISysRoleService roleService;
-    @Resource
-    private ISysPermissionService permissionService;
 
     @SysLog(MODULE = "sys", REMARK = "根据条件查询所有角色列表")
     @ApiOperation("根据条件查询所有角色列表")
@@ -126,7 +121,7 @@ public class SysRoleController  extends ApiController {
     @ApiOperation(value = "批量删除角色")
     @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
     @ResponseBody
-    @SysLog(MODULE = "pms", REMARK = "批量删除品牌")
+    @SysLog(MODULE = "pms", REMARK = "批量删除角色")
     @PreAuthorize("hasAuthority('sys:role:delete')")
     public Object deleteBatch(@RequestParam("ids") List<Long> ids) {
         boolean count = sysRoleService.removeByIds(ids);

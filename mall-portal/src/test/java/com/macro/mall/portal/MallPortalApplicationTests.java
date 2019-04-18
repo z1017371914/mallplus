@@ -1,4 +1,4 @@
-package com.macro.mall.portal;
+package com.zscat.mallplus.portal;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

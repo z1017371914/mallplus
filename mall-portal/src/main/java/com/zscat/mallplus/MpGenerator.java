@@ -77,9 +77,10 @@ public class MpGenerator {
         focList.add(new FileOutConfig("/templates/mapper.xml.vm") {
             @Override
             public String outputFile(TableInfo tableInfo) {
-                return "/Users/shenzhuan/gen/" + tableInfo.getEntityName() + ".xml";
+                return "/Users/shenzhuan/gen/" + tableInfo.getEntityName() + "Dao.xml";
             }
         });
+
         cfg.setFileOutConfigList(focList);
         mpg.setCfg(cfg);
         mpg.setTemplate(new TemplateConfig().setXml(null));
@@ -88,9 +89,18 @@ public class MpGenerator {
     // strategy.setCapitalMode(true);// 全局大写命名 ORACLE 注意
      //   strategy.setTablePrefix(new String[] { "tlog_", "tsys_" });// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-         strategy.setInclude(new String[] { "sys_user_permission","sys_area","sys_member_area","sys_permission",
+         /*strategy.setInclude(new String[] { "sys_user_permission","sys_area","sys_member_area","sys_permission",
                  "sys_role","sys_role_permission","sys_school", "sys_user","sys_user_permission",
-                 "sys_user_role","sys_web_log", "sys_admin_log"}); // 需要生成的表
+                 "sys_user_role","sys_web_log", "sys_admin_log"}); // 需要生成的表*/
+
+       /* strategy.setInclude(new String[] { "cms_help","cms_help_category","cms_member_report","cms_prefrence_area",
+                "cms_prefrence_area_product_relation","cms_subject","cms_subject_category", "cms_subject_comment",
+                "cms_subject_product_relation",
+                "cms_topic","cms_topic_category", "cms_topic_comment","cms_topic_member"}); // 需要生成的表*/
+
+        strategy.setInclude(new String[] { "oms_cart_item","oms_company_address","oms_order","oms_order_item",
+                "oms_order_operate_history","oms_order_return_apply","oms_order_setting", "oms_order_return_reason"}); // 需要生成的表
+
         // strategy.setExclude(new String[]{"test"}); // 排除生成的表
         // 自定义实体父类
         // strategy.setSuperEntityClass("com.baomidou.demo.TestEntity");
@@ -115,7 +125,7 @@ public class MpGenerator {
         // 包配置
         PackageConfig pc = new PackageConfig();
         pc.setParent("com.zscat.mallplus");
-        pc.setModuleName("sys");
+        pc.setModuleName("oms");
         mpg.setPackageInfo(pc);
 
 

@@ -1,0 +1,155 @@
+package ${package.Controller};
+
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.zscat.mallplus.annotation.SysLog;
+import com.zscat.mallplus.sys.entity.SysRole;
+import com.zscat.mallplus.sys.service.ISysRoleService;
+import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.utils.ValidatorUtils;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+#if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RestController;
+#else
+import org.springframework.stereotype.Controller;
+#end
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+
+/**
+ * <p>
+ * $!{table.comment} 前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Slf4j
+#if(${restControllerStyle})
+@RestController
+#else
+@Controller
+#end
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+
+#else
+    #if(${superControllerClass})
+    public class ${table.controllerName} extends ${superControllerClass} {
+    #else
+    public class ${table.controllerName} {
+    #end
+
+@Resource
+private ISysRoleService sysRoleService;
+
+@SysLog(MODULE = "sys", REMARK = "根据条件查询所有$!{table.comment}列表")
+@ApiOperation("根据条件查询所有$!{table.comment}列表")
+@GetMapping(value = "/list")
+@PreAuthorize("hasAuthority('sys:role:read')")
+public Object getRoleByPage(SysRole entity,
+@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+@RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize
+        ){
+        try{
+        return new CommonResult().success(sysRoleService.page(new Page<SysRole>(pageNum,pageSize),new QueryWrapper<>(entity)));
+        }catch(Exception e){
+        log.error("根据条件查询所有$!{table.comment}列表：%s",e.getMessage(),e);
+        }
+        return new CommonResult().failed();
+        }
+@SysLog(MODULE = "sys", REMARK = "保存$!{table.comment}")
+@ApiOperation("保存$!{table.comment}")
+@PostMapping(value = "/save")
+@PreAuthorize("hasAuthority('sys:role:create')")
+public Object saveRole(@RequestBody SysRole entity){
+        try{
+        entity.setId(IdWorker.getId());
+        if(sysRoleService.save(entity)){
+        return new CommonResult().success();
+        }
+        }catch(Exception e){
+        log.error("保存$!{table.comment}：%s",e.getMessage(),e);
+        return new CommonResult().failed();
+        }
+        return new CommonResult().failed();
+        }
+@SysLog(MODULE = "sys", REMARK = "更新$!{table.comment}")
+@ApiOperation("更新$!{table.comment}")
+@PutMapping(value = "/update/{id}")
+@PreAuthorize("hasAuthority('sys:role:update')")
+public Object updateRole(@RequestBody SysRole entity){
+        try{
+        if(sysRoleService.updateById(entity)){
+        return new CommonResult().success();
+        }
+        }catch(Exception e){
+        log.error("更新$!{table.comment}：%s",e.getMessage(),e);
+        return new CommonResult().failed();
+        }
+        return new CommonResult().failed();
+        }
+@SysLog(MODULE = "sys", REMARK = "删除$!{table.comment}")
+@ApiOperation("删除$!{table.comment}")
+@DeleteMapping(value = "/delete/{id}")
+@PreAuthorize("hasAuthority('sys:role:delete')")
+public Object deleteRole(@ApiParam("$!{table.comment}id") @PathVariable Long id){
+        try{
+        if(ValidatorUtils.empty(id)){
+        return new CommonResult().paramFailed("$!{table.comment}id");
+        }
+        if(sysRoleService.removeById(id)){
+        return new CommonResult().success();
+        }
+        }catch(Exception e){
+        log.error("删除$!{table.comment}：%s",e.getMessage(),e);
+        return new CommonResult().failed();
+        }
+        return new CommonResult().failed();
+        }
+@SysLog(MODULE = "sys", REMARK = "给$!{table.comment}分配$!{table.comment}")
+@ApiOperation("查询$!{table.comment}明细")
+@GetMapping(value = "/{id}")
+@PreAuthorize("hasAuthority('sys:role:read')")
+public Object getRoleById(@ApiParam("$!{table.comment}id") @PathVariable Long id){
+        try{
+        if(ValidatorUtils.empty(id)){
+        return new CommonResult().paramFailed("$!{table.comment}id");
+        }
+        SysRole coupon=sysRoleService.getById(id);
+        return new CommonResult().success(coupon);
+        }catch(Exception e){
+        log.error("查询$!{table.comment}明细：%s",e.getMessage(),e);
+        return new CommonResult().failed();
+        }
+
+        }
+@ApiOperation(value = "批量删除$!{table.comment}")
+@RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+@ResponseBody
+@SysLog(MODULE = "pms", REMARK = "批量删除$!{table.comment}")
+@PreAuthorize("hasAuthority('sys:role:delete')")
+public Object deleteBatch(@RequestParam("ids") List<Long> ids){
+        boolean count=sysRoleService.removeByIds(ids);
+        if(count){
+        return new CommonResult().success(count);
+        }else{
+        return new CommonResult().failed();
+        }
+        }
+        }
+
+#end

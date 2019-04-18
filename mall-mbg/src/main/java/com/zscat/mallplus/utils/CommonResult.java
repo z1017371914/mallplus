@@ -59,6 +59,16 @@ public class CommonResult {
         this.msg = msg;
         return this;
     }
+    public Object forbidden(String message) {
+        this.code = FAILED;
+        this.msg = message;
+        return this;
+    }
+    public Object unauthorized(String message) {
+        this.code = FAILED;
+        this.msg = message;
+        return this;
+    }
     /**
      * 普通失败提示信息
      */
@@ -96,4 +106,6 @@ public class CommonResult {
     public void setData(Object data) {
         this.data = data;
     }
+
+
 }
